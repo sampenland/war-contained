@@ -5,21 +5,23 @@
 
 int main(int argc, char* argv[]) 
 {
-	// Open a new window framework
 	PandaFramework framework;
 	framework.open_framework(argc, argv);
 	PT(AsyncTaskManager) task_mgr = AsyncTaskManager::get_global_ptr();
 
-	// Set the window title and open the window
 	framework.set_window_title("War :: Contained v" + std::string(WC_VERSION));
 	WindowFramework* window = framework.open_window();
 
-	NodePath mdl_level = window->load_model(framework.get_models(), "res/models/level1/level1.gltf");
-	mdl_level.reparent_to(window->get_render());
-	mdl_level.set_p(90.f);
+	NodePath mdl_level;
+	pCore::BlenderLoader::Load(&framework, window, "res/models/level1/level1.gltf", mdl_level, true);
 	mdl_level.set_z(-2);
 	
 	pCore::CameraController* cam_controller = new pCore::CameraController(&framework, window);
+
+	PT(AmbientLight) sun = new AmbientLight("Sun");
+	NodePath sun_np = window->get_render().attach_new_node(sun);
+	sun_np.set_color(LColor(254 / 255, 1, 242 / 255, 0.5f));
+	window->get_render().set_light(sun_np);	
 
 	framework.main_loop();
 	framework.close_framework();

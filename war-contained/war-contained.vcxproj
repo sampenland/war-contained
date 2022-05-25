@@ -138,6 +138,7 @@
     <ClCompile Include="src\WarContained.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\core\BlenderLoader.h" />
     <ClInclude Include="src\core\CameraController.h" />
     <ClInclude Include="src\precompiled.h" />
   </ItemGroup>

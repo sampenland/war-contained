@@ -4,12 +4,13 @@
 
 namespace pCore
 {
-	enum class CamConDirs
+	enum class Keys
 	{
 		Forward,
 		Backward,
 		Left,
-		Right
+		Right,
+		Escape // TODO: abstract to main loop /engine
 	};
 
 	class CameraController
@@ -17,7 +18,7 @@ namespace pCore
 
 	public:
 
-		CameraController(PandaFramework* framework, WindowFramework* window);
+		CameraController();
 		~CameraController();
 
 		static AsyncTask::DoneStatus Update(GenericAsyncTask* task, void* data);
@@ -30,6 +31,8 @@ namespace pCore
 
 		static void KeyPress(const Event*, void*);
 		static void KeyUp(const Event*, void*);
+
+		static bool s_Running;
 
 	protected:
 
@@ -45,8 +48,11 @@ namespace pCore
 
 		static float s_MouseSensitivity;
 		static float s_MoveSpeed;
+		static float s_CenterX;
+		static float s_CenterY;
+		static bool s_UnlockMouse;
 
-		static std::unordered_map<CamConDirs, bool> s_ControlKeys;
+		static std::unordered_map<Keys, bool> s_ControlKeys;
 
 	};
 }

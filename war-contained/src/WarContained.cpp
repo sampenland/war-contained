@@ -1,20 +1,27 @@
 #include "precompiled.h"
 #include "core/CameraController.h"
+#include "core/Game.h"
 
 #define WC_VERSION "0.0.1"
 
 int main(int argc, char* argv[]) 
 {
-	PandaFramework framework;
-	framework.open_framework(argc, argv);
-	PT(AsyncTaskManager) task_mgr = AsyncTaskManager::get_global_ptr();
+	pCore::Game* game = new pCore::Game("War :: Contained v." + std::string(WC_VERSION), 1280, 720, true);
 
-	framework.set_window_title("War :: Contained v" + std::string(WC_VERSION));
-	WindowFramework* window = framework.open_window();
-
-	NodePath mdl_level = window->load_model(framework.get_models(), "res/models/level1/level1map.gltf");
-	mdl_level.reparent_to(window->get_render());
+	NodePath mdl_level = pCore::Game::s_Window->load_model(pCore::Game::s_PandaFramework->get_models(), "res/models/level1/level1map.gltf");
+	mdl_level.reparent_to(pCore::Game::s_Window->get_render());
 	mdl_level.set_z(-2);
+
+	PT(AmbientLight) sun = new AmbientLight("Sun");
+	NodePath sun_np = pCore::Game::s_Window->get_render().attach_new_node(sun);
+	sun_np.set_color(LColor(254 / 255, 1, 242 / 255, 0.5f));
+	pCore::Game::s_Window->get_render().set_light(sun_np);
+
+	game->StartGame();
+
+	delete game;
+
+	
 
 	/*
 			# create a collision mesh for each of the loaded models
@@ -45,8 +52,8 @@ int main(int argc, char* argv[])
 	// Create collision shape from geometry of model
 	// ------------------------------------------------
 
-	NodePath ground_geom = mdl_level.find("**/Ground");
-	PT(GeomNode) geomNode = DCAST(GeomNode, ground_geom.node());
+	//NodePath ground_geom = mdl_level.find("**/Ground");
+	/*PT(GeomNode) geomNode = DCAST(GeomNode, ground_geom.node());
 	CPT(Geom) geom = geomNode->get_geom(0);
 	CPT(GeomVertexData) vdata = geom->get_vertex_data();
 
@@ -55,21 +62,10 @@ int main(int argc, char* argv[])
 	{
 		LVector3 v = vertex.get_data3();
 
-	}
+	}*/
 	
 	// -----------------------------------------------
+	
+	return 0;
 
-	pCore::CameraController* cam_controller = new pCore::CameraController(&framework, window);
-
-	PT(AmbientLight) sun = new AmbientLight("Sun");
-	NodePath sun_np = window->get_render().attach_new_node(sun);
-	sun_np.set_color(LColor(254 / 255, 1, 242 / 255, 0.5f));
-	window->get_render().set_light(sun_np);	
-
-	framework.main_loop();
-	framework.close_framework();
-
-	delete cam_controller;
-
-	return (0);
 }

@@ -5,8 +5,7 @@
 #include "directionalLight.h"
 #include "pointLight.h"
 #include "spotlight.h"
+#include "collisionNode.h"
 
 #include <iostream>
 #include <unordered_map>
-
-#include "core/BlenderLoader.h"

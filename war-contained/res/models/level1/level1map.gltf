@@ -80,7 +80,7 @@
         },
         {
             "mesh" : 1,
-            "name" : "Plane"
+            "name" : "Ground"
         },
         {
             "mesh" : 2,
@@ -1024,7 +1024,7 @@
             ]
         },
         {
-            "name" : "Plane.001",
+            "name" : "Ground",
             "primitives" : [
                 {
                     "attributes" : {

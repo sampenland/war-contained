@@ -20,40 +20,33 @@ namespace pCore
 		CPT(GeomVertexData) vdata = geom->get_vertex_data();
 		
 		std::vector<LVector3> vertices;
+		std::vector<LVector3> normals;
 		GeomVertexReader vertex(vdata, "vertex");
+		GeomVertexReader normal(vdata, "normal");
 		while (!vertex.is_at_end())
 		{
 			LVector3 p = vertex.get_data3();
+			LVector3 n = normal.get_data3();
+			std::cout << p << std::endl;
+			std::cout << n << std::endl;
 			vertices.push_back(p);
+			normals.push_back(n);
 		}
 
-		for (int i = 0; i < (int)vertices.size(); i+=3)
+		int vertices_count = (int)vertices.size();
+		for (int i = 0; i < (int)vertices.size(); i+=4)
 		{
 			LVecBase3 a = vertices[i];
 			LVecBase3 b = vertices[i + 1];
 			LVecBase3 c = vertices[i + 2];
+			LVecBase3 d = vertices[i + 3];
 
-			PT(CollisionPolygon) poly = new CollisionPolygon(a, b, c);
+			PT(CollisionPolygon) poly = new CollisionPolygon(a, b, c, d);
 			collision_node->add_solid(poly);
 		}
 
 		// -----------------------------------------------
 
 		return collision_root;
-	}
-
-	void Constructor::MakeGeom(const std::string& name, const std::vector<LVector3> vertices)
-	{
-		// Setup 
-		PT(GeomVertexData) vdata;
-		vdata = new GeomVertexData(name, GeomVertexFormat::get_v3(), Geom::UH_static);
-		vdata->set_num_rows(1);
-
-		GeomVertexWriter vertex(vdata, "vertex");
-
-		for (auto v : vertices)
-		{
-			vertex.add_data3(v);
-		}
 	}
 }

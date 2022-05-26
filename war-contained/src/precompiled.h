@@ -7,6 +7,9 @@
 #include "spotlight.h"
 #include "collisionNode.h"
 #include "collisionPolygon.h"
+#include "collisionHandlerPusher.h"
+#include "collisionHandlerFloor.h"
+#include "collisionRay.h"
 
 #include <iostream>
 #include <unordered_map>

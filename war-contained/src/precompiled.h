@@ -6,6 +6,7 @@
 #include "pointLight.h"
 #include "spotlight.h"
 #include "collisionNode.h"
+#include "collisionPolygon.h"
 
 #include <iostream>
 #include <unordered_map>

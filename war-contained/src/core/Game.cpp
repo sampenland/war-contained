@@ -7,7 +7,7 @@ namespace pCore
 	CameraController* Game::s_FPCameraController = nullptr;
 	PT(AsyncTaskManager) Game::s_TaskMgr = nullptr;
 	PandaFramework* Game::s_PandaFramework = nullptr;
-	PT(WindowFramework) Game::s_Window = nullptr;
+	WindowFramework* Game::s_Window = nullptr;
 
 	Game::Game(const std::string& game_title, int width, int height, bool hide_mouse)
 	{
@@ -38,13 +38,6 @@ namespace pCore
 		s_PandaFramework->close_framework();
 	}
 
-	Game::~Game()
-	{
-		if (s_PandaFramework)
-			delete s_PandaFramework;
-
-		if (s_FPCameraController)
-			delete s_FPCameraController;
-	}
+	Game::~Game(){ }
 
 }

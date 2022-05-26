@@ -21,7 +21,7 @@ namespace pCore
 		static CameraController* s_FPCameraController;
 		static PT(AsyncTaskManager) s_TaskMgr;
 		static PandaFramework* s_PandaFramework;
-		static PT(WindowFramework) s_Window;
+		static WindowFramework* s_Window;
 
 	private:
 

@@ -132,6 +132,7 @@
   <ItemGroup>
     <ClCompile Include="src\core\CameraController.cpp" />
     <ClCompile Include="src\core\Game.cpp" />
+    <ClCompile Include="src\core\Constructor.cpp" />
     <ClCompile Include="src\precompiled.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">precompiled.h</PrecompiledHeaderFile>
@@ -141,6 +142,7 @@
   <ItemGroup>
     <ClInclude Include="src\core\CameraController.h" />
     <ClInclude Include="src\core\Game.h" />
+    <ClInclude Include="src\core\Constructor.h" />
     <ClInclude Include="src\precompiled.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -23,6 +23,12 @@ namespace pCore
 
 		static AsyncTask::DoneStatus Update(GenericAsyncTask* task, void* data);
 
+		static inline LPoint3 GetPosition() { return s_Camera.get_pos(); }
+		static inline void SetPositition(float x, float y, float z) { s_Camera.set_pos(x, y, z); }
+		static inline void SetX(float x) { s_Camera.set_x(x); }
+		static inline void SetY(float y) { s_Camera.set_y(y); }
+		static inline void SetZ(float z) { s_Camera.set_z(z); }
+
 		static inline void SetMouseSensitivity(float sens) { s_MouseSensitivity = sens; }
 		static inline float GetMouseSensitivity() { return s_MouseSensitivity; }
 
@@ -51,6 +57,13 @@ namespace pCore
 		static float s_CenterX;
 		static float s_CenterY;
 		static bool s_UnlockMouse;
+		
+		static CollisionRay* s_Ray;
+		static CollisionNode* s_RayNode;
+		static CollisionSphere* s_PlayerCollisonSolid;
+		static CollisionNode* s_PlayerCollider;
+		static NodePath s_Player;
+		static NodePath s_CamToGround;
 
 		static std::unordered_map<Keys, bool> s_ControlKeys;
 

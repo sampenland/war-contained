@@ -20,30 +20,7 @@ int main(int argc, char* argv[])
 		
 	mdl_level.set_collide_mask(CollideMask::all_on());
 
-	NodePath player = pCore::Game::s_Window->load_model(pCore::Game::s_PandaFramework->get_models(),
-		"res/models/level1/player.gltf");
-	player.reparent_to(pCore::Game::s_Window->get_render());
-	player.set_collide_mask(CollideMask::all_off());
-
-	CollisionRay ray = CollisionRay(player.get_pos(), LVector3(0, 0, -1));
-	CollisionNode* ray_node = new CollisionNode("ray");
-	NodePath ray_np = player.attach_new_node(ray_node);
-	ray_node->add_solid(&ray);
-	ray_np.show();
-	ray_np.ls();
-	
-	PT(CollisionHandlerFloor) ground = new CollisionHandlerFloor;
-	ground->set_max_velocity(2);	
-
-	CollisionTraverser traverser;
-	traverser.set_respect_prev_transform(true);
-	traverser.traverse(pCore::Game::s_Window->get_render());
-	traverser.add_collider(ray_np, ground);
-	ground->add_collider(ray_np, player);
-
-	traverser.show_collisions(pCore::Game::s_Window->get_render());
-
-	player.set_y(6);
+	pCore::Game::s_FPCameraController->SetZ(10);
 
 	game->StartGame();
 

@@ -10,6 +10,7 @@
 #include "collisionHandlerPusher.h"
 #include "collisionHandlerFloor.h"
 #include "collisionRay.h"
+#include "collisionSphere.h"
 
 #include <iostream>
 #include <unordered_map>

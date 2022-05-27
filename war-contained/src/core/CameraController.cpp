@@ -12,6 +12,13 @@ namespace pCore
 	float CameraController::s_CenterY = 0.f;
 	bool CameraController::s_UnlockMouse = false;
 
+	CollisionRay* CameraController::s_Ray = nullptr;
+	CollisionNode* CameraController::s_RayNode = nullptr;
+	CollisionSphere* CameraController::s_PlayerCollisonSolid = nullptr;
+	CollisionNode* CameraController::s_PlayerCollider = nullptr;
+	NodePath CameraController::s_Player;
+	NodePath CameraController::s_CamToGround;
+
 	// TODO: abstract this into an engine loop class
 	bool CameraController::s_Running = true;
 	// ---------------------------------------------
@@ -43,6 +50,32 @@ namespace pCore
 
 		Game::s_Window->get_camera(0)->get_lens()->set_fov(90);
 		Game::s_Window->get_camera(0)->get_lens()->set_near(0.1); // Prevents near clipping with objects.
+
+		s_Ray = new CollisionRay(s_Camera.get_pos(), LVector3(0, 0, -1));
+		s_RayNode = new CollisionNode("cam_to_ground_ray");
+		s_CamToGround = s_Camera.attach_new_node(s_RayNode);
+		s_RayNode->add_solid(s_Ray);
+		s_CamToGround.show();
+
+		PT(CollisionHandlerFloor) ground = new CollisionHandlerFloor();
+		ground->set_max_velocity(2);
+
+		CollisionTraverser traverser = CollisionTraverser("traverser");
+		traverser.set_respect_prev_transform(true);
+		traverser.traverse(pCore::Game::s_Window->get_render());
+		
+		s_PlayerCollisonSolid = new CollisionSphere(s_Camera.get_pos(), 1.7f);
+		s_PlayerCollider = new CollisionNode("player");
+		s_PlayerCollider->set_collide_mask(CollideMask::all_off());
+		s_Player = s_Camera.attach_new_node(s_PlayerCollider);
+		s_PlayerCollider->add_solid(s_PlayerCollisonSolid);
+		s_Player.reparent_to(Game::s_Window->get_render());
+
+		traverser.add_collider(s_CamToGround, ground);
+		ground->add_collider(s_CamToGround, s_Player);
+
+		traverser.show_collisions(pCore::Game::s_Window->get_render());
+		
 	}
 
 	CameraController::~CameraController()
@@ -87,25 +120,25 @@ namespace pCore
 		if (s_ControlKeys[Keys::Forward])
 		{
 			float y = s_Camera.get_y();
-			s_Camera.set_y(y + (s_MoveSpeed * dt));
+			s_Camera.set_y(s_Camera, s_MoveSpeed * dt);
 		}
 
 		if (s_ControlKeys[Keys::Backward])
 		{
 			float y = s_Camera.get_y();
-			s_Camera.set_y(y - (s_MoveSpeed * dt));
+			s_Camera.set_y(s_Camera, -s_MoveSpeed * dt);
 		}
 
 		if (s_ControlKeys[Keys::Right])
 		{
 			float x = s_Camera.get_x();
-			s_Camera.set_x(x + (s_MoveSpeed * 0.75f * dt));
+			s_Camera.set_x(s_Camera, s_MoveSpeed * 0.75f * dt);
 		}
 
 		if (s_ControlKeys[Keys::Left])
 		{
 			float x = s_Camera.get_x();
-			s_Camera.set_x(x - (s_MoveSpeed * 0.75f * dt));
+			s_Camera.set_x(s_Camera, -s_MoveSpeed * 0.75f * dt);
 		}
 	}
 
